@@ -44,9 +44,123 @@ app.get("/api/cohorts", (req, res) => {
   res.json(cohorts);
 });
 
+app.get("/api/cohorts/:cohortId", (req, res) => {
+  const {cohortId} = req.params
+
+  Cohort.findById(cohortId)
+    .then( (cohortFromDB) => {
+      res.send(cohortFromDB)
+    })
+    .catch( (error) => {
+      console.log("Error getting cohort details from DB...", error);
+      res.send("Error getting cohort details from DB...");
+    })
+})
+
+app.post("/api/cohorts", (req, res) => {
+  Cohort.create(req.body)
+    .then( () => {
+      res.status(201).send("Cohort created")
+    })
+    .catch( (error) => {
+      console.log("Error creating cohort in DB...", error);
+      res.send("Error creating cohort in DB...");
+    })
+})
+
+app.put("/api/cohorts/:cohortId", (req, res) => {
+  const {cohortId} = req.params
+
+  Cohort.findByIdAndUpdate(cohortId, req.body, {new: true})
+  .then( () => {
+    res.send("Cohort is updated")
+  })
+  .catch( (error) => {
+    console.log("Error updating cohort in DB...", error);
+    res.send("Error updating cohort in DB...");
+  })
+})
+
+app.delete("/api/cohorts/:cohortId", (req, res) => {
+  const {cohortId} = req.params
+
+  Cohort.findByIdAndDelete(cohortId)
+    .then( () => {
+      res.send("Cohort was deleted")
+    })
+    .catch( (error) => {
+      console.log("Error deleting cohort from DB...", error);
+      res.send("Error deleting cohort from DB...");
+    })
+})
+
 app.get("/api/students", (req, res) => {
   res.json(students);
 });
+
+app.get("/api/students/cohort/:cohortId", (req, res) => {
+  const {cohortId} = req.params
+
+  Student.find({cohort: cohortId})
+    .then( (studentFromDB) => {
+      res.send(studentFromDB)
+    })
+    .catch( (error) => {
+      console.log("Error getting student details from DB...", error);
+      res.send("Error getting student details from DB...");
+    })
+})
+
+app.get("/api/students/:studentId", (req, res) => {
+  const { studentId } = req.params;
+
+  Student.findById(studentId)
+    .then((studentFromDB) => {
+      res.send(studentFromDB);
+    })
+    .catch((error) => {
+      console.log("Error getting student details from DB...", error);
+      res.send("Error getting student details from DB...");
+    });
+});
+
+app.post("/api/students", (req, res) => {
+  Student.create(req.body)
+    .then( (createdStudent) => {
+      res.status(201).send("A student is created")
+    })
+    .catch( (error) => {
+      console.log("Error creating student in DB...", error);
+      res.send("Error creating student in DB...");
+    })  
+})
+
+app.put("/api/students/:studentId", (req, res) => {
+  const {studentId} = req.params
+
+  Student.findByIdAndUpdate(studentId, req.body, {new: true})
+    .then( () => {
+      res.send("Student is updated")
+    })
+    .catch( (error) => {
+      console.log("Error updating student in DB...", error);
+      res.send("Error updating student in DB...");
+    })
+})
+
+app.delete("/api/students/:studentId", (req, res) => {
+  const {studentId} = req.params
+
+  Student.findByIdAndDelete(studentId)
+    .then( () => {
+      res.send("Student was deleted")
+    })
+    .catch( (error) => {
+      console.log("Error deleting student from DB...", error);
+      res.send("Error deleting student from DB...");
+
+    })
+})
 
 // START SERVER
 app.listen(PORT, () => {
