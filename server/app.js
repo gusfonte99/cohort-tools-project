@@ -41,7 +41,15 @@ app.get("/docs", (req, res) => {
 });
 
 app.get("/api/cohorts", (req, res) => {
-  res.json(cohorts);
+ Cohort.find()
+ .then((cohort) => {
+  res.json(cohort); 
+ })
+ .catch((error) => {
+  console.log("Error getting cohort from DB...", error);
+  res.status(500).json({message: "Error getting cohort from DB..."});
+});
+
 });
 
 app.get("/api/cohorts/:cohortId", (req, res) => {
