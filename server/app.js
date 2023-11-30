@@ -53,7 +53,7 @@ app.get("/api/cohorts/:cohortId", (req, res) => {
     })
     .catch((error) => {
       console.log("Error getting cohort details from DB...", error);
-      res.send("Error getting cohort details from DB...");
+      res.status(500).json({message: "Error getting cohort details from DB..."});
     });
 });
 
@@ -64,7 +64,7 @@ app.post("/api/cohorts", (req, res) => {
     })
     .catch((error) => {
       console.log("Error creating cohort in DB...", error);
-      res.send("Error creating cohort in DB...");
+      res.status(500).json({message: "Error creating cohort in DB..."});
     });
 });
 
@@ -77,7 +77,7 @@ app.put("/api/cohorts/:cohortId", (req, res) => {
     })
     .catch((error) => {
       console.log("Error updating cohort in DB...", error);
-      res.send("Error updating cohort in DB...");
+      res.status(500).json({message: "Error updating cohort in DB..."});
     });
 });
 
@@ -90,7 +90,7 @@ app.delete("/api/cohorts/:cohortId", (req, res) => {
     })
     .catch((error) => {
       console.log("Error deleting cohort from DB...", error);
-      res.send("Error deleting cohort from DB...");
+      res.status(500).json({message: "Error deleting cohort from DB..."});
     });
 });
 
@@ -100,7 +100,7 @@ app.get("/api/students", (req, res) => {
     .then(() => res.json(students))
     .catch((error) => {
       console.log("Error getting students from DB...", error);
-      res.send("Error getting students from DB");
+      res.status(500).json({message: "Error getting students from DB..."});
     });
 });
 
@@ -114,7 +114,7 @@ app.get("/api/students/cohort/:cohortId", (req, res) => {
     })
     .catch((error) => {
       console.log("Error getting student details from DB...", error);
-      res.send("Error getting student details from DB...");
+      res.status(500).json({message: "Error getting student details from DB..."});
     });
 });
 
@@ -128,7 +128,7 @@ app.get("/api/students/:studentId", (req, res) => {
     })
     .catch((error) => {
       console.log("Error getting student details from DB...", error);
-      res.send("Error getting student details from DB...");
+      res.status(500).json({message: "Error getting student details from DB..."});
     });
 });
 
@@ -139,7 +139,7 @@ app.post("/api/students", (req, res) => {
     })
     .catch((error) => {
       console.log("Error creating student in DB...", error);
-      res.send("Error creating student in DB...");
+      res.status(500).json({message: "Error creating student in DB..."});
     });
 });
 
@@ -152,7 +152,7 @@ app.put("/api/students/:studentId", (req, res) => {
     })
     .catch((error) => {
       console.log("Error updating student in DB...", error);
-      res.send("Error updating student in DB...");
+      res.status(500).json({message: "Error updating student in DB..."});
     });
 });
 
@@ -165,7 +165,7 @@ app.delete("/api/students/:studentId", (req, res) => {
     })
     .catch((error) => {
       console.log("Error deleting student from DB...", error);
-      res.send("Error deleting student from DB...");
+      res.status(500).json({message: "Error deleting student from DB..."});
     });
 });
 
@@ -173,3 +173,5 @@ app.delete("/api/students/:studentId", (req, res) => {
 app.listen(PORT, () => {
   console.log(`Server listening on port ${PORT}`);
 });
+
+
