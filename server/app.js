@@ -4,8 +4,6 @@ const morgan = require("morgan");
 const cookieParser = require("cookie-parser");
 const PORT = 5005;
 
-const Cohort = require("./models/Cohort.model");
-const Student = require("./models/Student.model");
 const { errorHandler, notFoundHandler } = require("./middleware/error-handling")
 
 // STATIC DATA
@@ -41,142 +39,8 @@ app.get("/docs", (req, res) => {
   res.sendFile(__dirname + "/views/docs.html");
 });
 
-app.get("/api/cohorts", (req, res, next) => {
- Cohort.find()
- .then((cohort) => {
-  res.json(cohort); 
- })
- .catch((error) => {
-  console.log("Error getting cohort from DB...", error);
-  next(error)
-});
-
-});
-
-app.get("/api/cohorts/:cohortId", (req, res, next) => {
-  const { cohortId } = req.params;
-
-  Cohort.findById(cohortId)
-    .then((cohortFromDB) => {
-      res.send(cohortFromDB);
-    })
-    .catch((error) => {
-      console.log("Error getting cohort details from DB...", error);
-      next(error)
-    });
-});
-
-app.post("/api/cohorts", (req, res, next) => {
-  Cohort.create(req.body)
-    .then(() => {
-      res.status(201).send("Cohort created");
-    })
-    .catch((error) => {
-      console.log("Error creating cohort in DB...", error);
-      next(error)
-    });
-});
-
-app.put("/api/cohorts/:cohortId", (req, res, next) => {
-  const { cohortId } = req.params;
-
-  Cohort.findByIdAndUpdate(cohortId, req.body, { new: true })
-    .then(() => {
-      res.send("Cohort is updated");
-    })
-    .catch((error) => {
-      console.log("Error updating cohort in DB...", error);
-      next(error)
-    });
-});
-
-app.delete("/api/cohorts/:cohortId", (req, res, next) => {
-  const { cohortId } = req.params;
-
-  Cohort.findByIdAndDelete(cohortId)
-    .then(() => {
-      res.send("Cohort was deleted");
-    })
-    .catch((error) => {
-      console.log("Error deleting cohort from DB...", error);
-      next(error)
-    });
-});
-
-app.get("/api/students", (req, res, next) => {
-  Student.find()
-    .populate("cohort")
-    .then(() => res.json(students))
-    .catch((error) => {
-      console.log("Error getting students from DB...", error);
-      next(error)
-    });
-});
-
-app.get("/api/students/cohort/:cohortId", (req, res, next) => {
-  const { cohortId } = req.params;
-
-  Student.find({ cohort: cohortId })
-    .populate("cohort")
-    .then((studentFromDB) => {
-      res.send(studentFromDB);
-    })
-    .catch((error) => {
-      console.log("Error getting student details from DB...", error);
-      next(error)
-    });
-});
-
-app.get("/api/students/:studentId", (req, res, next) => {
-  const { studentId } = req.params;
-
-  Student.findById(studentId)
-    .populate("cohort")
-    .then((studentFromDB) => {
-      res.send(studentFromDB);
-    })
-    .catch((error) => {
-      console.log("Error getting student details from DB...", error);
-      next(error)
-    });
-});
-
-app.post("/api/students", (req, res, next) => {
-  Student.create(req.body)
-    .then((createdStudent) => {
-      res.status(201).send("A student is created");
-    })
-    .catch((error) => {
-      console.log("Error creating student in DB...", error);
-      next(error)
-    });
-});
-
-app.put("/api/students/:studentId", (req, res, next) => {
-  const { studentId } = req.params;
-
-  Student.findByIdAndUpdate(studentId, req.body, { new: true })
-    .then(() => {
-      res.send("Student is updated");
-    })
-    .catch((error) => {
-      console.log("Error updating student in DB...", error);
-      next(error)
-    });
-});
-
-app.delete("/api/students/:studentId", (req, res, next) => {
-  const { studentId } = req.params;
-
-  Student.findByIdAndDelete(studentId)
-    .then(() => {
-      res.send("Student was deleted");
-    })
-    .catch((error) => {
-      console.log("Error deleting student from DB...", error);
-      next(error)
-    });
-});
+app.use("/api", require("./routes/cohort.routes"))
+app.use("/api", require("./routes/student.routes"))
 
 
 // Error handling !!!!!!!
